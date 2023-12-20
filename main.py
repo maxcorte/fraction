@@ -1,3 +1,4 @@
+
 class Fraction:
     """Classe représentant une fraction et ses opérations associées.
 
@@ -10,14 +11,14 @@ class Fraction:
         """Initialise une fraction avec un numerateur et un denominateur.
 
         PRÉ :   -num est le numerateur de la fraction, den est le denominateur de la fraction
-                -den ne peut pas être nul
 
         POST :  -La fraction est initialisée avec le numerateur et le denominateur donnés.
                 -la fraction doit être simplifiée grâce à la méthode pgcd().
                 permet le changement des valeurs de la fraction via des setters
+        RAISE:  ZeroDivisionError si le dénominateur est nul
         """
         if den == 0:
-            raise ValueError("Le dénominateur ne peut pas être nul.")
+            raise ZeroDivisionError("Le dénominateur ne peut pas être nul.")
         else:
             commun = self._pgcd(num, den)
             self._numerateur = num // commun
@@ -47,6 +48,7 @@ class Fraction:
 
         PRÉ : - a est le numérateur de la fraction, b est le dénominateur de la fraction
         POST :- Retourne le plus grand commun diviseur de a et b grâce à l'algorithme d'Euclide.
+        RAISE: ValueError si l'objet n'est pas une fraction
         """
         if not isinstance(self, Fraction):
             raise ValueError("L'objet n'est pas une fraction.")
@@ -78,13 +80,15 @@ class Fraction:
 
         PRÉ : self est une fraction
         POST : Retourne une chaîne représentant la fraction sous forme de nombre mixte.
+        RAISE: ValueError si l'objet n'est pas une fraction
         """
         if not isinstance(self, Fraction):
             raise ValueError("L'objet n'est pas une fraction.")
         else:
             partie_entiere = self._numerateur // self._denominateur
             reste = self._numerateur % self._denominateur
-            return f" la partie entière est {partie_entiere} et la partie fraction est {reste}/{self._denominateur}" if partie_entiere != 0 else str(
+            return (f" la partie entière est {partie_entiere} et la partie fraction "
+                    f"est {reste}/{self._denominateur}") if partie_entiere != 0 else str(
                 self)
 
     def __add__(self, other):
@@ -93,8 +97,8 @@ class Fraction:
         PRÉ : self et other sont des instances de la classe Fraction
         POST : Retourne une nouvelle fraction représentant la somme de self et other.
         """
-        nouveau_num = self._numerateur * other._denominateur + other._numerateur * self._denominateur
-        nouveau_den = self._denominateur * other._denominateur
+        nouveau_num = self._numerateur * other.denominateur + other.numerateur * self._denominateur
+        nouveau_den = self._denominateur * other.denominateur
         resultat = Fraction(nouveau_num, nouveau_den)
         return f"le résultat de l'addition est {resultat}"
 
@@ -104,8 +108,8 @@ class Fraction:
         PRÉ : self et other sont des instances de la classe Fraction
         POST : Retourne une nouvelle fraction représentant la différence entre self et other.
         """
-        nouveau_num = self._numerateur * other._denominateur - other._numerateur * self._denominateur
-        nouveau_den = self._denominateur * other._denominateur
+        nouveau_num = self._numerateur * other.denominateur - other.numerateur * self._denominateur
+        nouveau_den = self._denominateur * other.denominateur
         resultat = Fraction(nouveau_num, nouveau_den)
         return f"le résultat de la soustraction est {resultat}"
 
@@ -115,22 +119,23 @@ class Fraction:
         PRÉ : self et other sont des instances de la classe Fraction
         POST : Retourne une nouvelle fraction représentant le produit de self et other.
         """
-        nouveau_num = self._numerateur * other._numerateur
-        nouveau_den = self._denominateur * other._denominateur
+        nouveau_num = self._numerateur * other.numerateur
+        nouveau_den = self._denominateur * other.denominateur
         resultat = Fraction(nouveau_num, nouveau_den)
         return f"le résultat de la multiplication est {resultat}"
 
     def __truediv__(self, other):
         """Surcharge de l'opérateur / pour les fractions.
 
-        PRÉ : other n'est pas zéro
+        PRÉ : self et other sont des instances de la classe Fraction
         POST : Retourne une nouvelle fraction représentant la division de self par other.
+        RAISE: ZeroDivisionError si le dénominateur est nul
         """
         if self.denominateur == 0 or other.denominateur == 0 or other.numerateur == 0:
             raise ZeroDivisionError("Le dénominateur ne peut pas être nul.")
         else:
-            nouveau_num = self._numerateur * other._denominateur
-            nouveau_den = self._denominateur * other._numerateur
+            nouveau_num = self._numerateur * other.denominateur
+            nouveau_den = self._denominateur * other.numerateur
             resultat = Fraction(nouveau_num, nouveau_den)
             return f"le résultat de la division est {resultat}"
 
@@ -139,6 +144,7 @@ class Fraction:
 
         PRÉ : exp est un entier non négatif
         POST : Retourne une nouvelle fraction représentant self élevé à la puissance exp.
+        RAISE: ValueError si l'exposant n'est pas un entier positif
         """
         if not isinstance(exp, int) or exp < 0:
             raise ValueError("L'exposant doit être un entier positif.")
@@ -170,6 +176,7 @@ class Fraction:
         PRÉ : self est une instance de la classe Fraction
               self est une fraction
         POST : Retourne la valeur décimale de la fraction.
+        RAISE : ValueError si l'objet n'est pas une fraction
         """
         if not isinstance(self, Fraction):
             raise ValueError("L'objet n'est pas une fraction.")
@@ -207,6 +214,7 @@ class Fraction:
         PRÉ : self est une fraction
         POST : Retourne la fraction est propre si la valeur absolue de la fraction est < 1
                Retourne la fraction n'est pas propre si la valeur absolue de la fraction est > 1
+        RAISE : ValueError si l'objet n'est pas une fraction
         """
         if not isinstance(self, Fraction):
             raise ValueError("L'objet n'est pas une fraction.")
