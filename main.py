@@ -39,7 +39,8 @@ class Fraction:
 
             POST :
             - Si 'other' est déjà une instance de Fraction, renvoie 'other' inchangé.
-            - Si 'other' est de type int, crée une nouvelle instance de Fraction avec 'other' comme numérateur et 1 comme dénominateur.
+            - Si 'other' est de type int, crée une nouvelle instance de Fraction avec 'other'
+            comme numérateur et 1 comme dénominateur.
 
             RAISE : ValueError si other != int and other != Fraction
             """
