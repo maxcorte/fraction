@@ -86,7 +86,7 @@ class TestFraction(unittest.TestCase):
         fraction2 = Fraction(1, 2)
         fraction3 = Fraction(5, 2)
         fraction4 = Fraction(0, 2)
-        fraction5 = Fraction(1, 1)
+        fraction5 = Fraction(2, 1)
         result = fraction.nombre_mixte()
         result2 = fraction2.nombre_mixte()
         self.assertEqual(result, "2/3")
