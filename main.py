@@ -18,9 +18,15 @@ class Fraction:
         if den == 0:
             raise ZeroDivisionError("Le dénominateur ne peut pas être nul.")
 
+        abs_num = abs(num)
+        if (num < 0 < den) or (num > 0 > den):
+            num = -abs_num
+        else:
+            num = abs_num
+
         commun = self.pgcd(num, den)
         self._numerateur = num // commun
-        self._denominateur = den // commun
+        self._denominateur = abs(den) // commun
 
     @property
     def numerateur(self):
@@ -59,7 +65,7 @@ class Fraction:
         """
         while b:
             a, b = b, a % b
-        return a
+        return abs(a)
 
     def ppcm(self, a, b):
         """Calcule le plus petit commun multiple de a et b.
@@ -86,7 +92,7 @@ class Fraction:
         POST : Retourne une chaîne représentant la fraction sous forme de nombre mixte.
         RAISE: ValueError si l'objet n'est pas une fraction
         """
-        if self._numerateur == 0 or self._denominateur == 1:
+        if self._denominateur == 1 and self._numerateur != 0:
             raise ValueError("L'objet n'est pas une fraction.")
         partie_entiere = self._numerateur // self._denominateur
         reste = self._numerateur % self._denominateur
@@ -134,6 +140,8 @@ class Fraction:
         POST : Retourne une nouvelle fraction représentant la division de self par other.
         RAISE: ZeroDivisionError si le dividende est nul
         """
+        if other.numerateur == 0:
+            raise ZeroDivisionError("Le dividende ne peut pas être nul.")
         nouveau_num = self._numerateur * other.denominateur
         nouveau_den = self._denominateur * other.numerateur
         resultat = Fraction(nouveau_num, nouveau_den)
@@ -146,8 +154,13 @@ class Fraction:
         POST : Retourne une nouvelle fraction représentant self élevé à la puissance exp.
         RAISE: ValueError si l'exposant n'est pas un entier positif
         """
-        if not isinstance(exp, int) or exp < 0:
-            raise ValueError("L'exposant doit être un entier positif.")
+        if not isinstance(exp, int):
+            raise ValueError("L'exposant doit être un entier")
+        if exp < 0:
+            nouveau_num = self._denominateur ** abs(exp)
+            nouveau_den = self._numerateur ** abs(exp)
+            resultat = Fraction(nouveau_num, nouveau_den)
+            return resultat
         nouveau_num = self._numerateur ** exp
         nouveau_den = self._denominateur ** exp
         resultat = Fraction(nouveau_num, nouveau_den)
@@ -210,8 +223,6 @@ class Fraction:
         POST : return True si le numerateur de la fraction
          est égal à 1 dans sa forme réduite, False sinon.
         """
-        if self._numerateur == 0 or self._denominateur == 1:
-            raise ValueError("L'objet n'est pas une fraction.")
         return self._numerateur == 1
 
     def est_adjacente(self, other):
@@ -230,7 +241,7 @@ class Fraction:
 if __name__ == "__main__":
     try:
         Fraction()
-        fractions1 = Fraction(11, 4)
+        fractions1 = Fraction(1, 4)
         fractions2 = Fraction(3, 2)
         multiplation = fractions1 * fractions2
         division = fractions1 / fractions2
@@ -245,7 +256,7 @@ if __name__ == "__main__":
         print(fractions1.est_une_fraction_propre())
         print(fractions1.est_nulle())
         print(fractions1 == fractions2)
-        print(fractions1 ** 2)
+        print(fractions1 ** -2)
         print(fractions1.est_entiere())
         print(fractions1.__str__())
     except ZeroDivisionError as e:
