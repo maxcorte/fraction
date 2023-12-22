@@ -71,9 +71,12 @@ class TestFraction(unittest.TestCase):
         result = fraction1 / fraction2
         result2 = fraction1 / fraction3
         result3 = fraction2 / fraction3
+        result4 = fraction4 / fraction1
         self.assertEqual(result, Fraction(4, 3))
         self.assertEqual(result2, Fraction(-1, 6))
         self.assertEqual(result3, Fraction(-1, 8))
+        self.assertEqual(result4, Fraction(0, 1))
+
         with self.assertRaises(ZeroDivisionError):
             fraction1 / fraction4
             fraction2 / fraction4
@@ -126,7 +129,7 @@ class TestFraction(unittest.TestCase):
         fraction = Fraction(12, 3)
         fraction2 = Fraction(1, 1)
         fraction3 = Fraction(1, 4)
-        fraction4 = Fraction(-2,3)
+        fraction4 = Fraction(-2, 3)
         result2 = fraction3.__float__()
         self.assertEqual(result2, 0.25)
         self.assertEqual(fraction4.__float__(), -0.6666666666666666)
@@ -155,9 +158,8 @@ class TestFraction(unittest.TestCase):
         fraction4 = Fraction(-1, 2)
         self.assertEqual(fraction.est_une_fraction_propre(), False)
         self.assertEqual(fraction4.est_une_fraction_propre(), True)
-        with self.assertRaises(ValueError):
-            fraction2.est_une_fraction_propre()
-            fraction3.est_une_fraction_propre()
+        self.assertEqual(fraction2.est_une_fraction_propre(), False)
+        self.assertEqual(fraction3.est_une_fraction_propre(), False)
 
     def test_unitary_fraction_check(self):
         fraction = Fraction(1, 5)
@@ -196,10 +198,10 @@ class TestFraction(unittest.TestCase):
     def test_other_param(self):
         fraction = Fraction(3, 4)
         fraction2 = Fraction(5, 2)
-        other = 5
+        other = -5
         result = fraction.other_param(fraction2)
         self.assertEqual(result, fraction2)
-        self.assertEqual(fraction.other_param(other), Fraction(5, 1))
+        self.assertEqual(fraction.other_param(other), Fraction(-5, 1))
         with self.assertRaises(ValueError):
             fraction.other_param("2")
 

@@ -212,8 +212,8 @@ class Fraction:
         POST : Retourne True si la valeur absolue de la fraction est < 1, False sinon.
         RAISE : ValueError si l'objet n'est pas une fraction
         """
-        if self._numerateur == 0 or self._denominateur == 1:
-            raise ValueError("L'objet n'est pas une fraction.")
+        if self._numerateur == 0:
+            return False
         return abs(self._numerateur) < abs(self._denominateur)
 
     def est_unitaire(self):
